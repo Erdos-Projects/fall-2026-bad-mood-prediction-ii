@@ -3,6 +3,9 @@
 An Erdős Institute Data Science Boot Camp project investigating whether wearable-device measurements, participant demographics, and current-day self-reported moods can predict **mood labels on the following day**.
 
 ## Team members
+- Amal Sebastian
+- Ryan Zhang
+- Sam Johnson
 
 
 
