@@ -79,28 +79,6 @@ The primary objective of this project is to predict next-day mood probabilities 
 - **Average Precision (AP):** Summary of precision–recall performance, particularly relevant for imbalanced labels.
 - **Accuracy, precision, recall:** Binary classification performance at the selected mood-specific thresholds.
 
-## Held-out test results
-
-All metrics below were computed on **461 later observations**, using tuned Random Forest models and frozen thresholds.
-
-| Next-day mood | ROC AUC | AP | Brier ↓ | Precision | Recall | F1 |
-|---|---:|---:|---:|---:|---:|---:|
-| ALERT | 0.795 | 0.484 | 0.081 | 0.545 | 0.340 | 0.419 |
-| HAPPY | 0.685 | 0.287 | 0.145 | 0.273 | 0.700 | 0.393 |
-| NEUTRAL | **0.808** | **0.675** | 0.157 | 0.647 | 0.619 | **0.632** |
-| RESTED/RELAXED | 0.764 | 0.600 | 0.189 | 0.515 | 0.774 | 0.618 |
-| SAD | 0.662 | 0.071 | 0.038 | 0.071 | 0.056 | 0.062 |
-| TENSE/ANXIOUS | 0.598 | 0.360 | 0.151 | 0.318 | 0.322 | 0.320 |
-| TIRED | 0.616 | 0.465 | 0.221 | 0.421 | 0.667 | 0.516 |
-
-### Main findings
-
-- **NEUTRAL, ALERT, and RESTED/RELAXED** had the strongest held-out discrimination, with ROC AUC values of 0.808, 0.795, and 0.764, respectively.
-- **Historical mood matters:** Adding the seven current-day mood labels improved development cross-validation performance compared with the 13-feature wearable/demographic model. On the held-out test data, permutation importance identified the corresponding current-day mood as the highest-ranked feature for **six of seven** next-day targets.
-- **Probabilities beat a simple baseline for most labels:** Random Forest had a lower test Brier score than a constant development-prevalence predictor for **six of seven** moods. The exception was SAD, where the two were approximately tied.
-- **SAD remains challenging:** Only 18 positive SAD cases were present in the test set; the classifier correctly flagged one at its selected threshold. Its low Brier score should not be mistaken for good positive-case detection.
-
-Permutation importance measures the decrease in held-out AP after shuffling each original input feature; it reflects the fitted model's reliance on a feature, **not causality**. Correlated predictors can share information and reduce their individual measured importance.
 
 # Project pipeline
 
@@ -141,6 +119,30 @@ fall-2026-bad-mood-prediction-ii/
    - **lr_model_features_rollingmean.ipynb**:
    - **model_comparison.ipynb**: we use the 20 feature set and test it with logistic regression, KNN, random forrest, and          XGbooost. Random forrest which outperforms other algorithms is tuned further. We also find the threshold value for           each mood that maximises the F1 score. The tuned hyperparameters of Random forrest(best_rf.pkl) and the best threshold       values(best_tuned_threshold.pkl) are stored in procdata_para_thresh.
 4. **test_evaluation.ipynb**: Using the tuned Random Forrest , we train on the train set and test it on the test set. We also use the best threshold saved in procdata_para_thresh and get evaluation scores of AUC-ROC, F1 , precision, recall etc.
+
+## Held-out test results
+
+All metrics below were computed on **461 later observations**, using tuned Random Forest models and frozen thresholds.
+
+| Next-day mood | ROC AUC | AP | Brier ↓ | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| ALERT | 0.795 | 0.484 | 0.081 | 0.545 | 0.340 | 0.419 |
+| HAPPY | 0.685 | 0.287 | 0.145 | 0.273 | 0.700 | 0.393 |
+| NEUTRAL | **0.808** | **0.675** | 0.157 | 0.647 | 0.619 | **0.632** |
+| RESTED/RELAXED | 0.764 | 0.600 | 0.189 | 0.515 | 0.774 | 0.618 |
+| SAD | 0.662 | 0.071 | 0.038 | 0.071 | 0.056 | 0.062 |
+| TENSE/ANXIOUS | 0.598 | 0.360 | 0.151 | 0.318 | 0.322 | 0.320 |
+| TIRED | 0.616 | 0.465 | 0.221 | 0.421 | 0.667 | 0.516 |
+
+### Main findings
+
+- **NEUTRAL, ALERT, and RESTED/RELAXED** had the strongest held-out discrimination, with ROC AUC values of 0.808, 0.795, and 0.764, respectively.
+- **Historical mood matters:** Adding the seven current-day mood labels improved development cross-validation performance compared with the 13-feature wearable/demographic model. On the held-out test data, permutation importance identified the corresponding current-day mood as the highest-ranked feature for **six of seven** next-day targets.
+- **Probabilities beat a simple baseline for most labels:** Random Forest had a lower test Brier score than a constant development-prevalence predictor for **six of seven** moods. The exception was SAD, where the two were approximately tied.
+- **SAD remains challenging:** Only 18 positive SAD cases were present in the test set; the classifier correctly flagged one at its selected threshold. Its low Brier score should not be mistaken for good positive-case detection.
+
+Permutation importance measures the decrease in held-out AP after shuffling each original input feature; it reflects the fitted model's reliance on a feature, **not causality**. Correlated predictors can share information and reduce their individual measured importance.
+
 
 ## Limitations
 
