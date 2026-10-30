@@ -1,0 +1,28 @@
+name: erdos_ds_environment
+channels:
+  - conda-forge
+dependencies:
+  - python = 3.12
+  - pip >= 24.0
+  - pandas >= 2.0
+  - matplotlib >= 3.8
+  - scikit-learn >= 1.4
+  - pyarrow
+  - openpyxl >= 3.0
+  - sqlalchemy
+  - jupyter
+  - xgboost = 2.1.4
+  - pmdarima >= 2.0
+  - pygam
+  - interpret
+  - pandera
+  - missingno
+  - seaborn = 0.13.2
+  - plotly = 5.24.0
+  - lxml
+  - freetype = 2.13.3
+  - pip:
+      - cinemagoer
+      - pynytimes
+      - pyjokes == 0.6.0
+      - ucimlrepo
