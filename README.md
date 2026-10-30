@@ -58,6 +58,29 @@ Numerical features are median-imputed and scaled; demographics are one-hot encod
 6. **Decision thresholds:** Choose a separate threshold per mood to maximize F1 on development-fold validation predictions. Freeze models and thresholds before final testing.
 7. **Final evaluation and interpretation:** Refit using all development data, evaluate once on the held-out test set, compare Brier scores with a constant development-prevalence baseline, and calculate permutation importance for interpretation only.
 
+
+
+
+## Key Performance Indicators (KPIs)
+
+The primary objective of this project is to predict next-day mood probabilities using wearable measurements, demographic information, and current-day self-reported moods. We assess model performance using three KPIs:
+
+1. **Discriminative Performance (ROC-AUC):** Measure how effectively the models distinguish between positive and negative next-day mood outcomes. Higher ROC-AUC indicates better discrimination.
+
+2. **Probability Prediction Quality (Brier Score):** Evaluate the accuracy of predicted probabilities, aiming to outperform a constant-probability baseline estimated from development data. Lower Brier scores indicate better probability predictions.
+
+3. **Classification Performance (F1-Score):** Evaluate the balance between precision and recall using mood-specific classification thresholds selected to maximize F1 on development-set cross-validation predictions. This is a secondary KPI, particularly relevant for imbalanced mood labels.
+
+**Observed outcomes:** On the held-out test set, ROC-AUC ranged from 0.598 to 0.808, and six of the seven classifiers achieved lower Brier scores than the prevalence baseline. F1-scores ranged from 0.062 to 0.632, reflecting differences in classification performance across moods.
+
+
+
+
+
+
+
+
+
 ### Evaluation metrics
 
 - **ROC AUC:** Ranking quality across classification thresholds.
