@@ -113,7 +113,7 @@ Permutation importance measures the decrease in held-out AP after shuffling each
 
 ## Project workflow and notebooks
 
-The notebooks used during development include the following. **Adjust paths and filenames below to match the final repository layout** before publishing.
+The notebooks used during development include the following. 
 
 | Notebook | Purpose |
 |---|---|
