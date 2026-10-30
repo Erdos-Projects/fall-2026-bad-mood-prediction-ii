@@ -119,15 +119,28 @@ fall-2026-bad-mood-prediction-ii/
 │── README.md # Project overview and documentation
 
 ```
+## Setup Instruction
 
-### Running the analysis
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Erdos-Projects/fall-2026-bad-mood-prediction-ii.git
+   cd fall-2026-bad-mood-prediction-ii
 
-1. Obtain the LifeSnaps dataset and follow the relevant data-access and usage terms in the source publication.
-2. Install the Python packages used in the notebooks, including `numpy`, `pandas`, `matplotlib`, `scikit-learn`, `xgboost`, and Jupyter.
-3. Run the notebooks in the order shown above, or load their previously generated intermediate artifacts where applicable.
-4. Review the final evaluation notebook for the held-out results and figures.
+2. Create and Activate a python environment
+   -  conda env create --file=environment.yml
+   -  conda activate erdos_ds_environment
 
-The workflow depends on locally available input data and intermediate files; it is **not currently presented as a one-command reproducible pipeline**.
+
+## Running the Code
+
+1. Run the **inital_data_check_clean.ipynb** where data (data/daily_fitbit_sema_df_unprocessed.csv) is explored initially. This notebook creates test.csv and train.csv in data folder as a chronological split per participant as described above.
+2. **EDA**- EDA folder contains varios exploratory data analysis notebooks performed on the train data set.
+3. **modeling_result**
+   - **lr_model_features.ipynb**: we use logistic regression and progressively increase feature set from 8 to 10 to 13 to 20.
+     (last 7 is the present day moods) to study how ROC-AUC score improves. Processed train, test set and validation folds        saved in procdata_para_thresh (dev_demo.pkl,df_test.pkl and folds.pkl respectively). 20 features set performed the best.
+   - **lr_model_features_rollingmean.ipynb**:
+   - **model_comparison.ipynb**: we use the 20 feature set and test it with logistic regression, KNN, random forrest, and          XGbooost. Random forrest which outperforms other algorithms is tuned further. We also find the threshold value for           each mood that maximises the F1 score. The tuned hyperparameters of Random forrest(best_rf.pkl) and the best threshold       values(best_tuned_threshold.pkl) are stored in procdata_para_thresh.
+4. **test_evaluation.ipynb**: Using the tuned Random Forrest , we train on the train set and test it on the test set. We also use the best threshold saved in procdata_para_thresh and get evaluation scores of AUC-ROC, F1 , precision, recall etc.
 
 ## Limitations
 
