@@ -114,7 +114,7 @@ fall-2026-bad-mood-prediction-ii/
 │── EDA/ # contains EDA done multiple times
 │── initial_data_check_clean.ipynb/ # looks at data and creates train and test set
 │── test_evaluation.ipynb/ # evaluates performance on the test set
-│── modeling_results/ # Saved plots, trained models, and evaluation metrics
+│── modeling_results/ # different models applied with different features and performance evaluated
 │── environment.yml # Python dependencies
 │── README.md # Project overview and documentation
 
