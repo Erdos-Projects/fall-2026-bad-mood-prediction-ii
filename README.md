@@ -129,7 +129,7 @@ fall-2026-bad-mood-prediction-ii/
 1. We compared the ROC-AUC scores of logistic regression models across progressively expanded feature sets. We observed that including current-day mood labels resulted in the largest improvement in ROC-AUC, suggesting that current-day mood information is particularly valuable for predicting next-day moods.
 ![Figure descriptio](figures/AUC-comparison-across_features.png)
 
-2. With 20 feature set which showed the best results , we compared KNN, logistic regression, Random forrest and XGboost on AUC-ROC score. Out of them , Random Forrest performed slightly better. These comparisons can be found at figures/model_comparison/
+2. With 20 feature set which showed the best results , we compared KNN, logistic regression, Random forrest and XGboost on AUC-ROC score. Out of them , Random Forrest performed slightly better. These comparisons can be found at 'figures/model_comparison/'.
 
 3. Using the tuned Random Forest models, we identified the classification thresholds that maximize the F1-score for each next-day mood. Plots showing how F1-score, precision, and recall vary with the classification threshold are available in `figures/f1_recall_precision/`. All the thresholds are below 0.5.
 
