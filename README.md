@@ -53,7 +53,7 @@ Numerical features are median-imputed and scaled; demographics are one-hot encod
 We formulated this project as seven independent binary classification problems, each corresponding to a different next-day mood: ALERT, HAPPY, NEUTRAL, RESTED/RELAXED, SAD, TENSE/ANXIOUS, and TIRED. Each classifier independently predicts the probability of experiencing its corresponding mood on the following day.
 
 1. **Target construction and exploration:** Targets are constructed by matching each participant's day *t* to their mood labels on calendar day *t + 1*; records without usable next-day targets are excluded.
-2. **Chronological evaluation:** Reserve the later observations of eligible participants as a held-out test set. Use three expanding-window, within-participant chronological validation folds on the train data. Forty-nine participants appear in both train and test sets; this evaluates later observations of known participants, **not generalization to entirely unseen people**.
+2. **Chronological evaluation:**  We split the data chronologically for each participant, using the earlier 80% of observations for training and the remaining 20% for testing. Within the training set, we used three expanding-window chronological validation folds to evaluate model performance. Since 49 participants appear in both the training and test sets, our evaluation measures how well the models predict future moods for previously observed participants, rather than for entirely new individuals.
 3. **Feature comparisons:** Compare progressively richer sets of 8, 10, 13, and 20 predictors using Logistic Regression.
 4. **Algorithm benchmarking:** Compare Logistic Regression, KNN, XGBoost, and Random Forest with the same 20 predictors and chronological folds. Random Forest was selected for focused tuning based on its overall performance among the initial configurations tested; we do **not** claim it beats fully optimized alternatives.
 5. **Random Forest tuning:** Tune `max_depth` and `min_samples_leaf` separately for each mood, with `n_estimators=300`. Select best configurations by mean validation **PR-AUC**, using Brier score as a tie-breaker.
@@ -69,8 +69,8 @@ The primary objective of this project is to predict next-day mood probabilities 
 
 1. **Discriminative Performance (ROC-AUC):** Measure how effectively the models distinguish between positive and negative next-day mood outcomes. Higher ROC-AUC indicates better discrimination.
 2. **Precision-Recall Performance (PR-AUC):** Measure how effectively the models identify positive next-day mood outcomes while balancing precision and recall. Higher PR-AUC indicates better performance, particularly for imbalanced mood labels.
-3. **Probability Prediction Quality (Brier Score):** Evaluate the accuracy of predicted probabilities, aiming to outperform a constant-probability baseline estimated from dtrain data. Lower Brier scores indicate better probability predictions.
-4. **Classification Performance (F1-Score):** Evaluate the balance between precision and recall using mood-specific classification thresholds selected to maximize F1 on development-set cross-validation predictions. This is a secondary KPI, particularly relevant for imbalanced mood labels.
+3. **Probability Prediction Quality (Brier Score):** Evaluate the accuracy of predicted probabilities, aiming to outperform a constant-probability baseline estimated from train data. Lower Brier scores indicate better probability predictions.
+4. **Classification Performance (F1-Score):** Evaluate the balance between precision and recall using mood-specific classification thresholds selected to maximize F1 on train-set cross-validation predictions. This is a secondary KPI, particularly relevant for imbalanced mood labels.
 
 
 ### Evaluation metrics
@@ -93,6 +93,9 @@ fall-2026-bad-mood-prediction-ii/
 │── initial_data_check_clean.ipynb/ # looks at data and creates train and test set
 │── test_evaluation.ipynb/ # evaluates performance on the test set
 │── modeling_results/ # different models applied with different features and performance evaluated
+    │── lr_model_features.ipynb/ # logistic regression and increasing features
+    │── lr_model_features_rollingmean.ipynb/ # logistic regression on 20 features with multiple days used to predict a given         day
+    │── model_comparison.ipynb/ # KNN,XGboost,Random forrest also evaluated and best algorithm tuning 
 │── environment.yml # Python dependencies
 │── README.md # Project overview and documentation
 
@@ -114,10 +117,10 @@ fall-2026-bad-mood-prediction-ii/
 1. Run the **inital_data_check_clean.ipynb** where data (data/daily_fitbit_sema_df_unprocessed.csv) is explored initially. This notebook creates test.csv and train.csv in data folder as a chronological split per participant as described above.
 2. **EDA**- EDA folder contains varios exploratory data analysis notebooks performed on the train data set.
 3. **modeling_result**
-   - **lr_model_features.ipynb**: we use logistic regression and progressively increase feature set from 8 to 10 to 13 to 20.
+   - **lr_model_features.ipynb**: we use logistic regression and progressively increase feature set from 8 to 10 to 13 to 20
      (last 7 is the present day moods) to study how ROC-AUC score improves. Processed train, test set and validation folds        saved in procdata_para_thresh (dev_demo.pkl,df_test.pkl and folds.pkl respectively). 20 features set performed the best.
-   - **lr_model_features_rollingmean.ipynb**:
-   - **model_comparison.ipynb**: we use the 20 feature set and test it with logistic regression, KNN, random forrest, and          XGbooost. Random forrest which outperforms other algorithms is tuned further. We also find the threshold value for           each mood that maximises the F1 score. The tuned hyperparameters of Random forrest(best_rf.pkl) and the best threshold       values(best_tuned_threshold.pkl) are stored in procdata_para_thresh.
+   - **lr_model_features_rollingmean.ipynb**: An experiment where we tried incorporating more days to predict the next day         mood.
+   - **model_comparison.ipynb**: we use the 20 feature set and evaluate it with logistic regression, KNN, random forrest,          and XGbooost. Random forrest which outperforms other algorithms is tuned further. We also find the threshold value for       each mood that maximises the F1 score. The tuned hyperparameters of Random forrest(best_rf.pkl) and the best threshold       values(best_tuned_threshold.pkl) are stored in procdata_para_thresh.
 4. **test_evaluation.ipynb**: Using the tuned Random Forrest , we train on the train set and test it on the test set. We also use the best threshold saved in procdata_para_thresh and get evaluation scores of AUC-ROC, F1 , precision, recall etc.
 
 
@@ -126,7 +129,7 @@ fall-2026-bad-mood-prediction-ii/
 1. We compared the ROC-AUC scores of logistic regression models across progressively expanded feature sets. We observed that including current-day mood labels resulted in the largest improvement in ROC-AUC, suggesting that current-day mood information is particularly valuable for predicting next-day moods.
 ![Figure descriptio](figures/AUC-comparison-across_features.png)
 
-2. With 20 feature set which showed the best results , we compared KNN, logistic regression, Random forrest and XGboost on AUC-ROC score. Out of them , Random Forrest performed slightly better.
+2. With 20 feature set which showed the best results , we compared KNN, logistic regression, Random forrest and XGboost on AUC-ROC score. Out of them , Random Forrest performed slightly better. These comparisons can be found at figures/model_comparison/
 
 3. Using the tuned Random Forest models, we identified the classification thresholds that maximize the F1-score for each next-day mood. Plots showing how F1-score, precision, and recall vary with the classification threshold are available in `figures/f1_recall_precision/`. All the thresholds are below 0.5.
 
