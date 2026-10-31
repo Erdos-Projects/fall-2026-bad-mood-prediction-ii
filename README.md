@@ -167,12 +167,14 @@ All metrics below were computed on **461 later observations**, using tuned Rando
 - The next-day task assumes current-day questionnaires and wearable summaries are available at prediction time. Exact measurement/report availability should be verified before any real-time deployment claim.
 - These are predictive associations, not causal explanations or clinical assessments.
 
+
 ## Future work
 
-- Evaluate generalization to completely unseen participants and across data-collection periods.
-- Investigate calibration and changes in mood prevalence across time or participants.
-- Explore lagged mood history and time-of-report information, subject to strict prediction-time availability checks.
-- Assess subgroup performance and uncertainty, especially for rare mood labels.
+- **Generalization:** Evaluate model performance on entirely unseen participants and across different data-collection periods.
+- **Probability calibration:** Investigate calibration of predicted mood probabilities and their robustness to changes in mood prevalence across participants and time.
+- **Temporal feature engineering:** Explore multi-day mood history, lagged wearable measurements, and mood-report timing while ensuring that all predictors are available at prediction time.
+- **Subgroup evaluation and uncertainty:** Assess performance across participant subgroups and quantify uncertainty in evaluation metrics, particularly for rare outcomes such as SAD.
+
 
 ## Data citation
 
