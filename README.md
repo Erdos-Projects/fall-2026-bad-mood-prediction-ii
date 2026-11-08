@@ -114,7 +114,7 @@ fall-2026-bad-mood-prediction-ii/
 
 ## Running the Code
 
-1. Run the **inital_data_check_clean.ipynb** where data (data/daily_fitbit_sema_df_unprocessed.csv) is explored initially. This notebook creates test.csv and train.csv in data folder as a chronological split per participant as described above.
+1. Run the **inital_data_check_clean.ipynb** where data (data/daily_fitbit_sema_df_unprocessed.csv) is explored initially. This notebook cleans the data and creates test.csv and train.csv in data folder as a chronological split per participant as described above.
 2. **EDA**- EDA folder contains varios exploratory data analysis notebooks performed on the train data set.
 3. **modeling_result**
    - **lr_model_features.ipynb**: we use logistic regression and progressively increase feature set from 8 to 10 to 13 to 20
